@@ -3,7 +3,7 @@
 Count API is a counter made using serverless AWS services of [Lambda](https://aws.amazon.com/lambda/) and [DynamoDB](https://aws.amazon.com/dynamodb/) 
 
 ## Usage
-Use the API endpoint [https://mc3xepweq4y6sfw4yswnq2izke0hyvtz.lambda-url.ap-south-1.on.aws/](https://mc3xepweq4y6sfw4yswnq2izke0hyvtz.lambda-url.ap-south-1.on.aws/)\<action\>/\<key\> to count the key item. 
+Use the API endpoint [https://mc3xepweq4y6sfw4yswnq2izke0hyvtz.lambda-url.ap-south-1.on.aws/](https://mc3xepweq4y6sfw4yswnq2izke0hyvtz.lambda-url.ap-south-1.on.aws/)\<action\>/\<key\> to count a key item. 
 
 ### Possible actions are: 
 - count : to count things for the key
