@@ -1,23 +1,41 @@
 import json
 import boto3
+import re
 
 client = boto3.resource('dynamodb')
 
 table = client.Table('Count')
 
-def lambda_handler(event, context):
+def lambda_handler(event,context):
     # TODO implement
     print(event)
     c = 0
     li = event["rawPath"].split('/')
-    if li[1]=="count":
-      c = count(li[2])
-    elif li[1]=="get":
-      c = get(li[2])
+    action,key = '',''
+    try:
+        pattern = re.compile(r"^[a-z0-9_-]{3,64}$")
+        action = li[1]
+        key = li[2].lower()
+        if not (re.fullmatch(pattern,key)):
+           raise Exception
+    except:
+       return {
+        'statusCode': 400, 
+        'body': json.dumps({'message':"bad request"})
+    }
+    if(key==""):
+       return {
+        'statusCode': 400, 
+        'body': json.dumps({'message':"bad request"})
+    }
+       
+    if action=="count":
+      c = count(key)
+    elif action=="get":
+      c = get(key)
       if c == -1:
         return {
         'statusCode': 404, 
-        # 'body': json.dumps({'value':c})
         'body': json.dumps({'message':"item does not exist"})
     }
     else:
