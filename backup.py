@@ -9,15 +9,27 @@ def lambda_handler(event, context):
     # TODO implement
     print(event)
     c = 0
-    if event["rawPath"] == "/count":
-      c = count(event["queryStringParameters"]["key"])
-    elif event["rawPath"] == "/get":
-      c = get(event["queryStringParameters"]["key"])
-    
+    li = event["rawPath"].split('/')
+    if li[1]=="count":
+      c = count(li[2])
+    elif li[1]=="get":
+      c = get(li[2])
+      if c == -1:
+        return {
+        'statusCode': 404, 
+        # 'body': json.dumps({'value':c})
+        'body': json.dumps({'message':"item does not exist"})
+    }
+    else:
+        return {
+        'statusCode': 400, 
+        # 'body': json.dumps({'value':c})
+        'body': json.dumps({'message':"bad request"})
+    }
     return {
         'statusCode': 200, 
         # 'body': json.dumps({'value':c})
-        'body': json.dumps({'value':c,'event':event})
+        'body': json.dumps({'value':c})
     }
     
 def count(user_id):
@@ -40,6 +52,8 @@ def get(user_id):
             "user_id": user_id
         }
     )
+    if "Item" not in get_resp:
+       return -1
     item = get_resp['Item']
     print("get_resp: ",item['addValue'])
     return int(item['addValue'])
