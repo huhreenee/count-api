@@ -1,6 +1,8 @@
 import boto3
 import json
 import re
+from time import time
+
 
 client = boto3.resource('dynamodb',
     region_name = 'ap-south-1')
@@ -22,10 +24,11 @@ def count(user_id):
         Key = {
             "user_id": user_id
         },
-        UpdateExpression="ADD addValue :val1", 
+        UpdateExpression="ADD addValue :val1 SET version = :ts1",
         #ConditionExpression='addValue > :val',
         ExpressionAttributeValues= {
-            ":val1": 1
+            ":val1": 1,
+            ":ts1" : round(time())
         },
         ReturnValues='ALL_NEW'
     )
